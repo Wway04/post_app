@@ -8,6 +8,7 @@ if (localStorage.getItem("users")) {
 function usersReducer(state = initialState, action) {
   switch (action.type) {
     case "users/create":
+      localStorage.setItem("users", JSON.stringify([...state, action.payload]));
       return [...state, action.payload];
     default:
       return state;

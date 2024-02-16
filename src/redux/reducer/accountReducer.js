@@ -11,6 +11,9 @@ function accountReducer(state = initialState, action) {
     case "account/login":
       // users
       return { ...action.payload };
+    case "account/register":
+      console.log("action", action.payload);
+      return { ...action.payload };
     case "account/logout":
       // logic for updating
       return action.payload;

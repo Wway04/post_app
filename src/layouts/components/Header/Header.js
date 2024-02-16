@@ -1,20 +1,26 @@
 import classNames from "classnames/bind";
 import { useState, createContext } from "react";
-import React from "react";
-import { Formik, Field, Form } from "formik";
+import { useSelector, useDispatch } from "react-redux";
 
 import styles from "./Header.module.scss";
 import Auth from "../../../components/Auth";
+import { accountSelector } from "../../../redux/selector";
+import { accountCurrentLogOutAction } from "../../../redux/action";
 
 const cx = classNames.bind(styles);
 
 export const authContext = createContext();
 
 function Header() {
+  const dispatch = useDispatch();
+  const account = useSelector(accountSelector);
+  const isAccount = Object.keys(account).length === 0;
   const [auth, setAuth] = useState(false);
-
   const handleAuth = () => {
     setAuth(!auth);
+  };
+  const handleLogout = () => {
+    dispatch(accountCurrentLogOutAction(account));
   };
   return (
     <authContext.Provider value={handleAuth}>
@@ -22,7 +28,7 @@ function Header() {
         <div className={cx("inner")}>
           <h1>PostApp</h1>
 
-          {false ? (
+          {isAccount ? (
             <div className={cx("auth")}>
               <button onClick={handleAuth}>Login</button>
               <button onClick={handleAuth}>Register</button>
@@ -31,7 +37,7 @@ function Header() {
           ) : (
             <div className={cx("account-current")}>
               <div className={cx("profile")}></div>
-              <button>Log out</button>
+              <button onClick={handleLogout}>Log out</button>
             </div>
           )}
         </div>

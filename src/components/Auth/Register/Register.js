@@ -1,29 +1,19 @@
 import classNames from "classnames/bind";
+import { useDispatch } from "react-redux";
+import { useContext } from "react";
 import { useState } from "react";
-import { Formik } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
 import styles from "../Auth.module.scss";
+import { authContext } from "../../../layouts/components/Header/Header";
+import { userCreateAction } from "../../../redux/action";
 
 const cx = classNames.bind(styles);
 function Register() {
-  const [username, setUsername] = useState();
-  console.log("🚀 ~ Register ~ username:", username);
-  const [password, setPassword] = useState();
-  console.log("🚀 ~ Register ~ password:", password);
-  const [passwordConfirm, setPasswordConfirm] = useState();
-  console.log("🚀 ~ Register ~ passwordConfirm:", passwordConfirm);
-  const SignupSchema = Yup.object().shape({
-    username: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    password: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    passwordConfirm: Yup.string(),
-  });
+  const dispatch = useDispatch();
+  const handleAuth = useContext(authContext);
+
   return (
     <Formik
       initialValues={{
@@ -31,44 +21,71 @@ function Register() {
         password: "",
         passwordConfirm: "",
       }}
-      validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        console.log(values);
+      validate={(values) => {
+        const errors = {};
+        if (!values.username) {
+          errors.username = "Required";
+        }
+        if (!values.password) {
+          errors.password = "Required";
+        }
+        if (!values.passwordConfirm) {
+          errors.passwordConfirm = "Required";
+        } else if (!(values.passwordConfirm === values.password)) {
+          errors.passwordConfirm = "Invalid password";
+        }
+        return errors;
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        delete values.passwordConfirm;
+        dispatch(userCreateAction(values));
+        handleAuth();
       }}
     >
-      {({ errors, touched }) => (
-        <div className={cx("register")}>
-          <form>
-            <label for="Auth_chk__rqasp" aria-hidden="true">
-              Sign up
-            </label>
-            <input
+      {({
+        errors,
+        touched,
+        isSubmitting,
+        /* and other goodies */
+      }) => (
+        <Form className={cx("register")}>
+          <label htmlFor="Auth_chk__rqasp" aria-hidden="true">
+            Sign up
+          </label>
+          <div className={cx("form-group")}>
+            <Field
               type="text"
-              name="txt"
+              name="username"
               placeholder="User name"
               required=""
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
             />
-            <input
+            <span>{touched.username && errors.username}</span>
+          </div>
+          <div className={cx("form-group")}>
+            <Field
               type="text"
-              name="pswd"
+              name="password"
               placeholder="Password"
               required=""
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
-            <input
+            <span>{touched.password && errors.password}</span>
+          </div>
+          <div className={cx("form-group")}>
+            <Field
               type="password"
-              name="pswdConfirm"
+              name="passwordConfirm"
               placeholder="Password confirm"
               required=""
-              value={passwordConfirm}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
             />
-            <button>Sign up</button>
-          </form>
-        </div>
+            <span>
+              {touched.passwordConfirm &&
+                errors.passwordConfirm &&
+                errors.passwordConfirm}
+            </span>
+          </div>
+
+          <button type="submit">Submit</button>
+        </Form>
       )}
     </Formik>
   );

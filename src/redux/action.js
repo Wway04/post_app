@@ -1,5 +1,5 @@
 // Users
-export const userAddAction = (
+export const userCreateAction = (
   user = {
     id: "",
     name: "",
@@ -7,7 +7,7 @@ export const userAddAction = (
     password: "",
   }
 ) => ({
-  type: "user/add",
+  type: "users/create",
   payload: user,
 });
 
@@ -23,17 +23,24 @@ export const postAddAction = (
     comment: [],
   }
 ) => ({
-  type: "post/add",
+  type: "posts/create",
   payload: post,
 });
 export const postDeleteAction = (id) => ({
-  type: "post/delete",
+  type: "posts/delete",
   payload: id,
 });
 
 export const postEditAction = (id) => ({
-  type: "post/edit",
+  type: "posts/edit",
   payload: id,
+});
+
+export const accountCurrentRegisterAction = (
+  user = { username: "", password: "" }
+) => ({
+  type: "account/register",
+  payload: user,
 });
 
 export const accountCurrentLoginAction = (
@@ -42,6 +49,7 @@ export const accountCurrentLoginAction = (
   type: "account/login",
   payload: user,
 });
+
 export const accountCurrentLogOutAction = () => ({
   type: "account/logout",
   payload: {},
