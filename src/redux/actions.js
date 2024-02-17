@@ -36,9 +36,9 @@ export const postFavoriteAction = (post_id, user_id) => ({
   payload: { post_id, user_id },
 });
 
-export const postEditAction = (id) => ({
+export const postEditAction = (id, content) => ({
   type: "posts/edit",
-  payload: id,
+  payload: { id, content },
 });
 
 export const accountCurrentRegisterAction = (

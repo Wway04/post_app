@@ -10,9 +10,13 @@ function postsReducer(state = initialState, action) {
     case "posts/create":
       localStorage.setItem("posts", JSON.stringify([...state, action.payload]));
       return [...state, action.payload];
-    case "posts/update":
-      // logic for updating
-      return state;
+    case "posts/edit":
+      // logic for editing
+      const postsIdEdit = state.map((post) => post.id);
+      const postEditId = postsIdEdit.indexOf(action.payload.id);
+      state[postEditId].content = action.payload.content;
+      localStorage.setItem("posts", JSON.stringify(state));
+      return [...state];
     case "posts/favorite":
       const postsIdFavorite = state.map((post) => post.id);
       if (postsIdFavorite.indexOf(action.payload.post_id) === -1) return state;

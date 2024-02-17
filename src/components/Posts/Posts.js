@@ -10,7 +10,7 @@ function Posts() {
   const posts = useSelector(postsSelector);
 
   return (
-    <div>
+    <div className={cx("wrapper")}>
       <h1>Post</h1>
       {posts.map((post) => (
         <PostItem key={post.id} post={post} />
