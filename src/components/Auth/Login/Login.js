@@ -1,16 +1,16 @@
 import classNames from "classnames/bind";
 import { useSelector, useDispatch } from "react-redux";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import styles from "../Auth.module.scss";
 import { accountCurrentLoginAction } from "../../../redux/actions";
 import { usersSelector } from "../../../redux/selector";
-import { useState } from "react";
 import { authContext } from "../../../layouts/components/Header/Header";
 
 const cx = classNames.bind(styles);
 function Login() {
   const dispatch = useDispatch();
+
   const handleAuth = useContext(authContext);
   const users = useSelector(usersSelector);
   const [username, setUsername] = useState("");
@@ -22,6 +22,11 @@ function Login() {
     if (account) {
       dispatch(accountCurrentLoginAction(account));
       handleAuth();
+    }
+  };
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
     }
   };
   return (
@@ -36,6 +41,7 @@ function Login() {
           placeholder="Username"
           required=""
           value={username}
+          onKeyDown={(e) => handleEnter(e)}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
@@ -44,6 +50,7 @@ function Login() {
           placeholder="Password"
           required=""
           value={password}
+          onKeyDown={(e) => handleEnter(e)}
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="button" onClick={handleSubmit}>
