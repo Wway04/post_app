@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useContext } from "react";
 
 import styles from "../Auth.module.scss";
-import { accountCurrentRegisterAction } from "../../../redux/action";
+import { accountCurrentLoginAction } from "../../../redux/actions";
 import { usersSelector } from "../../../redux/selector";
 import { useState } from "react";
 import { authContext } from "../../../layouts/components/Header/Header";
@@ -20,7 +20,7 @@ function Login() {
       (user) => user.username === username && user.password === password
     );
     if (account) {
-      dispatch(accountCurrentRegisterAction(account));
+      dispatch(accountCurrentLoginAction(account));
       handleAuth();
     }
   };

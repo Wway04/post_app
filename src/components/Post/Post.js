@@ -1,9 +1,9 @@
 import classNames from "classnames";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { v4 as id } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
 
-import { postAddAction } from "../../redux/action";
+import { postAddAction } from "../../redux/actions";
 import styles from "./Post.module.scss";
 import { accountSelector } from "../../redux/selector";
 
@@ -15,9 +15,7 @@ function Post() {
   const [value, setValue] = useState();
   const account = useSelector(accountSelector);
   const handleSubmit = () => {
-    if (!Object.keys(account).length) {
-      return;
-    }
+    if (!Object.keys(account).length) return;
     const post = {
       id: id(),
       user_id: account.id,

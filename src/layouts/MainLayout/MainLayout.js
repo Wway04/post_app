@@ -2,7 +2,9 @@ import classNames from "classnames/bind";
 
 import styles from "./MainLayout.module.scss";
 import Header from "../components/Header";
-import Posts from "../components/Posts";
+import Posts from "../../components/Posts";
+import Post from "../../components/Post";
+
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -15,6 +17,7 @@ function MainLayout() {
       <Header />
       <div className={cx("container")}>
         <div className={cx("inner")}>
+          <Post />
           <Posts />
         </div>
       </div>

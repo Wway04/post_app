@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from "./Header.module.scss";
 import Auth from "../../../components/Auth";
 import { accountSelector } from "../../../redux/selector";
-import { accountCurrentLogOutAction } from "../../../redux/action";
+import { accountCurrentLogOutAction } from "../../../redux/actions";
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +20,7 @@ function Header() {
     setAuth(!auth);
   };
   const handleLogout = () => {
-    dispatch(accountCurrentLogOutAction(account));
+    dispatch(accountCurrentLogOutAction());
   };
   return (
     <authContext.Provider value={handleAuth}>

@@ -44,7 +44,7 @@ export const accountCurrentRegisterAction = (
 });
 
 export const accountCurrentLoginAction = (
-  user = { username: "", password: "" }
+  user = { id: "", username: "", password: "" }
 ) => ({
   type: "account/login",
   payload: user,

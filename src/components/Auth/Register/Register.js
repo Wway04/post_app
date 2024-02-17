@@ -1,4 +1,6 @@
 import classNames from "classnames/bind";
+import { v4 as id } from "uuid";
+
 import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { useState } from "react";
@@ -7,7 +9,7 @@ import * as Yup from "yup";
 
 import styles from "../Auth.module.scss";
 import { authContext } from "../../../layouts/components/Header/Header";
-import { userCreateAction } from "../../../redux/action";
+import { userCreateAction } from "../../../redux/actions";
 
 const cx = classNames.bind(styles);
 function Register() {
@@ -17,6 +19,7 @@ function Register() {
   return (
     <Formik
       initialValues={{
+        id: id(),
         username: "",
         password: "",
         passwordConfirm: "",
