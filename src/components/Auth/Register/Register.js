@@ -42,7 +42,7 @@ function Register() {
       onSubmit={(values, { setSubmitting }) => {
         delete values.passwordConfirm;
         dispatch(userCreateAction(values));
-        handleAuth();
+        handleAuth.handleAuth();
       }}
     >
       {({

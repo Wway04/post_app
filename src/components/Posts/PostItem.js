@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { Typography } from "antd";
+import { Button, Popconfirm, Typography } from "antd";
 
 import {
   ClockCircleFilled,
@@ -31,12 +31,13 @@ const cx = classNames.bind(styles);
 function PostItem({ post }) {
   const dispatch = useDispatch();
   const [content, setContent] = useState(post.content);
+  useEffect(() => {
+    dispatch(postEditAction(post.id, content));
+  }, [content]);
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const accountId = useSelector(accountSelector).id;
   const postTime = new Date(post.currentTime);
-
-  const handleDelete = () => {
-    dispatch(postDeleteAction(post.id));
-  };
 
   const handleFavorite = () => {
     if (!accountId) return;
@@ -49,9 +50,20 @@ function PostItem({ post }) {
     inputRef.current.focus();
   };
 
-  useEffect(() => {
-    dispatch(postEditAction(post.id, content));
-  }, [content]);
+  const showPopConfirm = () => {
+    setOpen(true);
+  };
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+      dispatch(postDeleteAction(post.id));
+    }, 2000);
+  };
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -92,14 +104,22 @@ function PostItem({ post }) {
         </div>
         {accountId === post.user_id && (
           <div className={cx("post-item-tools")}>
-            <button onClick={handleDelete}>
-              <DeleteOutlined />
-              Delete
-            </button>
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure to delete this status?"
+              description="Delete the status"
+              open={open}
+              onConfirm={handleOk}
+              onCancel={handleCancel}
+              okButtonProps={{ loading: confirmLoading }}
+            >
+              <Button type="primary" onClick={showPopConfirm}>
+                <DeleteOutlined />
+                Delete
+              </Button>
+            </Popconfirm>
           </div>
         )}
-        <br />
-        <br />
       </div>
       <Divider />
     </>

@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
-import { DatePicker } from "antd";
+import { Avatar, notification } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { useState, createContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -15,30 +16,47 @@ export const authContext = createContext();
 function Header() {
   const dispatch = useDispatch();
   const account = useSelector(accountSelector);
-  const isAccount = Object.keys(account).length === 0;
+  console.log("🚀 ~ Header ~ account:", account);
   const [auth, setAuth] = useState(false);
+  const isAccount = Object.keys(account).length > 0 && !auth;
   const handleAuth = () => {
     setAuth(!auth);
   };
   const handleLogout = () => {
     dispatch(accountCurrentLogOutAction());
   };
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (username) => {
+    console.log(account);
+    api.info({
+      message: `Welcome ${username}`,
+      placement: "topLeft",
+    });
+  };
+  const AUTHSCONTEXT = {
+    handleAuth,
+    openNotification,
+  };
+
   return (
-    <authContext.Provider value={handleAuth}>
+    <authContext.Provider value={AUTHSCONTEXT}>
       <header className={cx("wrapper")}>
+        {contextHolder}
         <div className={cx("inner")}>
           <h1>PostApp</h1>
-
           {isAccount ? (
+            <div className={cx("account-current")}>
+              <div className={cx("profile")}>
+                <Avatar size={30} icon={<UserOutlined />} />
+              </div>
+              <button onClick={handleLogout}>Log out</button>
+            </div>
+          ) : (
             <div className={cx("auth")}>
               <button onClick={handleAuth}>Login</button>
               <button onClick={handleAuth}>Register</button>
               {auth && <Auth />}
-            </div>
-          ) : (
-            <div className={cx("account-current")}>
-              <div className={cx("profile")}></div>
-              <button onClick={handleLogout}>Log out</button>
             </div>
           )}
         </div>
