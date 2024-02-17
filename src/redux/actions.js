@@ -31,6 +31,11 @@ export const postDeleteAction = (id) => ({
   payload: id,
 });
 
+export const postFavoriteAction = (post_id, user_id) => ({
+  type: "posts/favorite",
+  payload: { post_id, user_id },
+});
+
 export const postEditAction = (id) => ({
   type: "posts/edit",
   payload: id,

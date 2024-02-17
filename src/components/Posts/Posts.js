@@ -13,7 +13,7 @@ function Posts() {
     <div>
       <h1>Post</h1>
       {posts.map((post) => (
-        <PostItem post={post} />
+        <PostItem key={post.id} post={post} />
       ))}
     </div>
   );

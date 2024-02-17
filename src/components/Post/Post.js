@@ -11,7 +11,6 @@ const cx = classNames.bind(styles);
 
 function Post() {
   const dispatch = useDispatch();
-  const [title, settTitle] = useState();
   const [value, setValue] = useState();
   const account = useSelector(accountSelector);
   const handleSubmit = () => {
@@ -19,24 +18,16 @@ function Post() {
     const post = {
       id: id(),
       user_id: account.id,
-      name: title,
       content: value,
       currentTime: new Date().toString(),
       favorite: [],
       comment: [],
     };
     dispatch(postAddAction(post));
-    settTitle("");
     setValue("");
   };
   return (
     <div className={cx("wrapper")}>
-      <input
-        type="text"
-        placeholder="Title status"
-        value={title}
-        onChange={(e) => settTitle(e.target.value)}
-      />
       <input
         type="text"
         placeholder="Add a status"
