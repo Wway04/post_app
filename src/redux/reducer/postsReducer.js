@@ -40,6 +40,21 @@ function postsReducer(state = initialState, action) {
       state?.splice(postDeleteId, 1);
       localStorage.setItem("posts", JSON.stringify(state));
       return [...state];
+    case "posts/comment":
+      // ktra xem id của post comment có trùng với id của post nằm trong posts
+      // lấy được id của post -> thêm comment vào post.comment với: id, user_id, content
+      const postsIdComment = state.map((post) => post.id);
+      const postCommentId = postsIdComment.indexOf(action.payload.post_id);
+      const comments = state[postCommentId].comment;
+      const comment = {
+        id: action.payload.id,
+        user_id: action.payload.user_id,
+        content: action.payload.content,
+        currentTime: action.payload.currentTime,
+      };
+      state[postCommentId].comment = [...comments, comment];
+      localStorage.setItem("posts", JSON.stringify(state));
+      return [...state];
     default:
       return state;
   }

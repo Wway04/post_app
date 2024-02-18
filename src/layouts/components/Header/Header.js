@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { Avatar, notification } from "antd";
+import { Avatar, Button, notification } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useState, createContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -50,12 +50,12 @@ function Header() {
               <div className={cx("profile")}>
                 <Avatar size={30} icon={<UserOutlined />} />
               </div>
-              <button onClick={handleLogout}>Log out</button>
+              <Button onClick={handleLogout}>Log out</Button>
             </div>
           ) : (
             <div className={cx("auth")}>
-              <button onClick={handleAuth}>Login</button>
-              <button onClick={handleAuth}>Register</button>
+              <Button onClick={handleAuth}>Login</Button>
+              <Button onClick={handleAuth}>Register</Button>
               {auth && <Auth />}
             </div>
           )}

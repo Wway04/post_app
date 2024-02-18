@@ -5,6 +5,7 @@ import styles from "./Auth.module.scss";
 import Login from "./Login";
 import Register from "./Register";
 import { authContext } from "../../layouts/components/Header/Header";
+import { Button, Input } from "antd";
 
 const cx = classNames.bind(styles);
 function Auth() {
@@ -17,10 +18,10 @@ function Auth() {
           e.stopPropagation();
         }}
       >
-        <button className={cx("btn-close")} onClick={handleAuth.handleAuth}>
+        <Button className={cx("btn-close")} onClick={handleAuth.handleAuth}>
           X
-        </button>
-        <input type="checkbox" id={cx("chk")} aria-hidden="true" />
+        </Button>
+        <Input type="checkbox" id={cx("chk")} aria-hidden="true" />
         <Register />
         <Login />
       </div>

@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
-import { Button, Popconfirm, Typography } from "antd";
-
+import { Button, Input, Popconfirm, Typography } from "antd";
+import { v4 as id } from "uuid";
 import {
   ClockCircleFilled,
   CommentOutlined,
@@ -23,6 +23,7 @@ import {
   postDeleteAction,
   postEditAction,
   postFavoriteAction,
+  postCommentAction,
 } from "../../redux/actions";
 
 const { Paragraph } = Typography;
@@ -34,22 +35,19 @@ function PostItem({ post }) {
   useEffect(() => {
     dispatch(postEditAction(post.id, content));
   }, [content]);
+  const [comment, setComment] = useState("");
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const accountId = useSelector(accountSelector).id;
   const postTime = new Date(post.currentTime);
-
   const handleFavorite = () => {
     if (!accountId) return;
     dispatch(postFavoriteAction(post.id, accountId));
   };
-
   const inputRef = useRef();
-
   const handleFocusComment = () => {
     inputRef.current.focus();
   };
-
   const showPopConfirm = () => {
     setOpen(true);
   };
@@ -59,10 +57,25 @@ function PostItem({ post }) {
       setOpen(false);
       setConfirmLoading(false);
       dispatch(postDeleteAction(post.id));
-    }, 2000);
+    }, 500);
   };
   const handleCancel = () => {
     setOpen(false);
+  };
+  const handleComment = () => {
+    handleFocusComment();
+    if (!accountId) return;
+    if (!comment) return;
+    const postComment = {
+      id: id(),
+      post_id: post.id,
+      user_id: accountId,
+      currentTime: new Date().toString(),
+      content: comment,
+    };
+    dispatch(postCommentAction(postComment));
+    setComment("");
+    handleFocusComment();
   };
 
   return (
@@ -88,18 +101,26 @@ function PostItem({ post }) {
             {post.favorite?.length > 0 && post.favorite?.length}
           </div>
           <div className={cx("post-item-actions")}>
-            <button onClick={handleFavorite}>
+            <Button onClick={handleFavorite}>
               <HeartOutlined />
               Favorite
-            </button>
-            <button onClick={handleFocusComment}>
+            </Button>
+            <Button onClick={handleFocusComment}>
               <CommentOutlined />
               Comment
-            </button>
+            </Button>
           </div>
+          <div className={cx("comments")}></div>
           <div className={cx("post-item-comment")}>
-            <input type="text" ref={inputRef} />
-            <button>Send</button>
+            <div className={cx("actions-comment")}>
+              <Input
+                type="text"
+                ref={inputRef}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <Button onClick={handleComment}>Send</Button>
+            </div>
           </div>
         </div>
         {accountId === post.user_id && (

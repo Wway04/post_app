@@ -36,7 +36,7 @@ function Login() {
     <>
       <div className={cx("login")}>
         <form>
-          <label for="Auth_chk__rqasp" aria-hidden="true">
+          <label htmlFor="Auth_chk__rqasp" aria-hidden="true">
             Login
           </label>
           <input

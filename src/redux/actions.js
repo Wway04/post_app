@@ -41,6 +41,14 @@ export const postEditAction = (id, content) => ({
   payload: { id, content },
 });
 
+export const postCommentAction = (
+  comment = { id: "", post_id: "", user_id: "", currentTime: "", content: "" }
+) => ({
+  type: "posts/comment",
+  payload: comment,
+});
+
+// Account
 export const accountCurrentRegisterAction = (
   user = { username: "", password: "" }
 ) => ({
